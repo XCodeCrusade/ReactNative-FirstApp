@@ -1,46 +1,35 @@
-import React from "react";
-import { ImageBackground, StyleSheet, View, Image, Text } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, Text, Button } from "react-native";
 
 function WelcomeScreen(props) {
   return (
-    <ImageBackground
-      style={styles.background}
-      source={require("../assests/background.jpg")}
-    >
-      <View style={styles.logoContainer}>
-        <Text>Sell What you Don't Need</Text>
-        <Image style={styles.logo} source={require("../assets/logo.png")} />
+    <View style={styles.container}>
+      <Text style={styles.header}>Rock Paper Scissors!</Text>
+      <Text style={styles.emoji}>✊ ✋ ✌️</Text>
+      <View style={styles.btnContainer}>
+        <Button onPress={() => props.onPress(true)} title="Play!" />
       </View>
-      <View style={styles.loginButton}></View>
-      <View style={styles.registerButton}></View>
-    </ImageBackground>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  background: {
+  container: {
     flex: 1,
-    justifyContent: "flex-end",
+    backgroundColor: "#fff",
     alignItems: "center",
+    justifyContent: "center",
   },
-  loginButton: {
-    width: "100%",
-    height: 70,
-    backgroundColor: "#fc5c65",
+  header: {
+    fontSize: 28,
+    marginBottom: 10,
   },
-  logo: {
-    width: 100,
-    height: 100,
+  emoji: {
+    fontSize: 60,
   },
-  logoContainer: {
-    position: "absolute",
-    top: 70,
-    alignItems: "center",
-  },
-  registerButton: {
-    width: "100%",
-    height: 70,
-    backgroundColor: "#4ecdc4",
+  btnContainer: {
+    marginTop: 60,
+    width: 240,
   },
 });
 export default WelcomeScreen;
