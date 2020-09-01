@@ -1,46 +1,94 @@
-import React from "react";
-import { Image, StyleSheet, View } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, Text, Button, Image } from "react-native";
 
-import colors from "../config/colors.js";
+import bgColors from "../config/colors.js";
+
+const scissorsPng = require("../assets/scissors.png");
+const rockPng = require("../assets/rock.png");
+const paperPng = require("../assets/paper.png");
+
+// generate a random Sign
+const randomSignGenerator = () => {
+  const signPng = [scissorsPng, rockPng, paperPng];
+  const randVal = Math.floor(Math.random() * 3);
+  return signPng[randVal];
+};
 
 function ViewImageScreen(props) {
+  const [counter, SetCounter] = useState(3);
+  const handlePress = () => {
+    SetCounter(3);
+  };
+  useEffect(() => {
+    if (counter < 1) return;
+    const timer = setTimeout(() => {
+      SetCounter((previous) => previous - 1);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [counter]);
+
   return (
-    <View styles={styles.container}>
-      <View styles={styles.closeIcon} />
-      <View styles={styles.deleteIcon} />
-      <Image
-        resizeMode="contain"
-        styles={styles.image}
-        source={require("../assets/chair.jpg")}
-      />
+    <View style={styles.container}>
+      {counter < 1 ? (
+        <>
+          <Image style={styles.sign} source={randomSignGenerator()} />
+
+          <View
+            style={StyleSheet.compose(styles.playAgainBtn, styles.btnContainer)}
+          >
+            <Button onPress={handlePress} title="Play Again!" />
+          </View>
+
+          <View
+            style={StyleSheet.compose(styles.homePageBtn, styles.btnContainer)}
+          >
+            <Button onPress={() => props.onPress(false)} title="Home Page" />
+          </View>
+        </>
+      ) : (
+        <View
+          style={StyleSheet.compose(styles.counterContainer, {
+            backgroundColor: bgColors[counter - 1],
+          })}
+        >
+          <Text style={styles.counter}>{counter}</Text>
+        </View>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  closeIcon: {
-    width: 50,
-    height: 50,
-    backgroundColor: colors.primary,
+  btnContainer: {
     position: "absolute",
-    top: 40,
-    left: 30,
+    width: 240,
   },
   container: {
-    backgroundColor: colors.black,
     flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  deleteIcon: {
-    width: 50,
-    height: 50,
-    backgroundColor: colors.secondary,
-    position: "absolute",
-    top: 40,
-    right: 30,
+  counter: {
+    fontSize: 150,
+    color: "#fff",
   },
-  image: {
+  counterContainer: {
+    flex: 1,
     width: "100%",
-    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  sign: {
+    width: 200,
+    height: 200,
+  },
+  homePageBtn: {
+    bottom: 40,
+    marginBottom: 20,
+  },
+  playAgainBtn: {
+    bottom: 20,
   },
 });
 export default ViewImageScreen;
