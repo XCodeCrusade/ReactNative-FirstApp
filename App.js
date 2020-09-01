@@ -1,11 +1,15 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { StyleSheet, Text, View, Image, SafeAreaView } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet } from "react-native";
 import WelcomeScreen from "./app/screens/WelcomeScreen";
 import ViewImageScreen from "./app/screens/ViewImageScreen";
 
 export default function App() {
-  return <ViewImageScreen />;
+  const [playState, setPlayState] = useState(false);
+  return playState ? (
+    <ViewImageScreen onPress={(value) => setPlayState(value)} />
+  ) : (
+    <WelcomeScreen onPress={(value) => setPlayState(value)} />
+  );
 }
 
 const styles = StyleSheet.create({
